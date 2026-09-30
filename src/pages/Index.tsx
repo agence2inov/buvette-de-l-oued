@@ -2,15 +2,16 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, Clock3, MapPin, Sun, Waves } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PlaceImage } from "@/components/PlaceImage";
+import HeroSlideshow from "@/components/HeroSlideshow";
 import { mapUrl } from "@/components/SiteLayout";
 
 export default function Index() {
   return <>
     <section className="relative isolate min-h-[650px] overflow-hidden bg-primary lg:min-h-[690px]">
-      <div className="absolute inset-0 -z-20"><PlaceImage /></div>
-      <div className="absolute inset-0 -z-10 bg-[#102f46]/20" />
+      <HeroSlideshow />
+      <div className="absolute inset-0 -z-10 bg-[#102f46]/35" />
       <div className="page-width flex min-h-[650px] flex-col justify-center py-20 lg:min-h-[690px]">
-        <div className="max-w-[740px] text-white motion-safe:animate-in motion-safe:fade-in motion-safe:duration-700">
+        <div className="max-w-[740px] text-white">
           <p className="eyebrow mb-7 flex items-center gap-3 text-white"><span className="h-px w-8 bg-white/80" /> La plage de Préverenges</p>
           <h1 className="hero-title">Buvette de l’Oued,<br />au bord du lac<br />à Préverenges<span className="text-[#acd3ef]">.</span></h1>
           <p className="mt-7 max-w-[490px] text-lg leading-relaxed text-white">Une assiette chaude ou froide, une glace ou un verre, les pieds presque dans l’eau face aux Alpes.</p>

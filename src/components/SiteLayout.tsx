@@ -36,7 +36,7 @@ export default function SiteLayout() {
       </div>
       {open && <nav id="mobile-navigation" aria-label="Navigation mobile" className="border-t px-6 pb-5 md:hidden">{links.map(([to, label]) => <NavLink key={to} to={to} end className={({ isActive }) => `block rounded-lg px-3 py-3 ${isActive ? "bg-secondary font-bold text-primary" : ""}`}>{label}</NavLink>)}</nav>}
     </header>
-    <main id="contenu"><Outlet /></main>
+    <main id="contenu" key={pathname} className="page-arrival"><Outlet /></main>
     <footer className="bg-primary text-white">
       <div className="page-width grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
         <div><div className="inline-block rounded-xl bg-white p-2"><Logo /></div><p className="mt-5 max-w-xs text-sm leading-7 text-white/85">Une pause au bord du lac.<br />Tout simplement.</p></div>

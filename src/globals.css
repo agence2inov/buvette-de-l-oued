@@ -45,6 +45,22 @@
   .page-intro { @apply border-b border-border bg-secondary/50 py-12 sm:py-16; }
   .notice { @apply rounded-xl border border-primary/15 bg-secondary/60 px-5 py-4 text-sm leading-7 text-muted-foreground; }
 }
+
+@keyframes page-arrival {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  a, button {
+    transition-property: color, background-color, border-color, opacity, box-shadow, transform, text-decoration-color;
+    transition-duration: 250ms;
+    transition-timing-function: ease-out;
+  }
+  button:active, a.inline-flex:active { transform: translateY(1px); }
+  .page-arrival { animation: page-arrival 300ms ease-out both; }
+  #mobile-navigation { animation: page-arrival 220ms ease-out both; }
+  [data-state][role="region"] { animation-duration: 280ms; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
