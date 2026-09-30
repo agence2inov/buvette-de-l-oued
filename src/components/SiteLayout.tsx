@@ -7,7 +7,7 @@ import { Logo } from "./PlaceImage";
 const links = [["/", "Accueil"], ["/la-carte", "La carte"], ["/horaires", "Les horaires"], ["/contact-acces", "Contact & accès"]];
 const metadata: Record<string, [string, string]> = {
   "/": ["Buvette de l’Oued à Préverenges — Au bord du lac", "Une assiette chaude ou froide, une glace ou un verre face aux Alpes. Découvrez la Buvette de l’Oued à Préverenges, sa carte, ses horaires et son accès."],
-  "/la-carte": ["La carte — Buvette de l’Oued, Préverenges", "Consultez les boissons, jus et bières pression de la Buvette de l’Oued à Préverenges. Retrouvez les contenances et les tarifs issus de la carte disponible."],
+  "/la-carte": ["La carte — Buvette de l’Oued, Préverenges", "Découvrez la carte de la Buvette de l’Oued à Préverenges : boissons, cocktails, salades, plats chauds et burgers. Prix en CHF, TVA et service inclus."],
   "/horaires": ["Les horaires — Buvette de l’Oued, Préverenges", "Retrouvez les horaires par période et les conditions d’ouverture de la Buvette de l’Oued, au bord de la plage de Préverenges."],
   "/contact-acces": ["Contact & accès — Buvette de l’Oued, Préverenges", "Retrouvez la Buvette de l’Oued à l’avenue de la Plage 27, 1028 Préverenges. Adresse, itinéraire et informations de contact."],
 };

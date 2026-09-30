@@ -1,0 +1,19 @@
+export type MenuProduct = { name: string; options: { volume?: string; price: string }[]; note?: string };
+export type MenuCategory = { id: string; name: string; products: MenuProduct[] };
+const item = (name: string, price: string, volume?: string, note?: string): MenuProduct => ({ name, options: [{ volume, price }], note });
+const draft = (name: string, small: string, medium: string, pitcher: string): MenuProduct => ({ name, options: [{ volume: "2.5 dl", price: small }, { volume: "5 dl", price: medium }, { volume: "1.5 l", price: pitcher }] });
+const cocktail = (name: string, volume: string, price: string, pitcher: string): MenuProduct => ({ name, options: [{ volume, price }, { volume: "Pichet 1.5 l", price: pitcher }] });
+export const menu: MenuCategory[] = [
+  { id: "minerales", name: "Boissons minérales PET", products: ["Eau minérale sans gaz / gazeuse", "Coca / Coca Zéro", "Thé froid citron / pêche", "Limonade citron", "Sinalco", "Jus de pomme", "Rivella rouge / bleu", "Schweppes tonic / Lemon"].map(name => item(name, "4.50", "5 dl")) },
+  { id: "jus", name: "Jus de fruits & nectars", products: ["Jus d’orange", "Jus d’ananas", "Jus de pêche", "Jus de tomate", "Nectar d’abricot", "Jus multifruits"].map(name => item(name, "4.50", "2 dl")) },
+  { id: "pression", name: "Bières La Nébuleuse — pression", products: [draft("Zepp Craft Lager 4.5 %", "5.00", "8.00", "20.00"), draft("Embuscade IPA 6.4 %", "6.00", "9.00", "25.00"), draft("Moonshine Blanche 5.0 %", "6.00", "9.00", "25.00")] },
+  { id: "bouteilles", name: "Bières bouteilles", products: [item("Corona", "8.00", "33 cl"), item("Nébuleuse Diversion IPA sans alcool", "7.00", "33 cl")] },
+  { id: "cocktails", name: "Cocktails", products: [cocktail("Spritz / Hugo", "5 dl", "12.00", "30.00"), cocktail("Mojito / Caipirinha", "2.5 dl", "14.00", "60.00"), cocktail("Piña Colada / Planteur", "2.5 dl", "12.00", "60.00")] },
+  { id: "sans-alcool", name: "Cocktails sans alcool", products: ["Virgin Spritz", "Virgin Mojito", "Virgin Planteur", "Virgin Colada"].map(name => item(name, "8.00")) },
+  { id: "chaudes", name: "Boissons chaudes", products: [item("Café / Espresso / Ristretto", "3.50"), item("Renversé / Cappuccino", "4.50"), item("Chocolat chaud", "4.50"), item("Thé chaud", "3.00")] },
+  { id: "toute-heure", name: "À toute heure", products: [item("Hot dog", "7.00"), item("Portion de frites", "7.00"), item("Chicken nuggets", "7.00", "5 pièces"), item("Chicken nuggets", "12.00", "10 pièces"), item("Calamars à la romaine avec frites", "20.00", "200 g"), item("Nachos avec sauce", "9.00"), item("Pimientos de Padrón", "11.00"), item("Bruschetta", "9.00"), item("Tapas de L’Oued", "24.00"), item("Petite assiette apéro", "14.00"), item("Grande assiette apéro", "24.00"), item("Assiette végétarienne", "23.00")] },
+  { id: "salades", name: "Salades", products: [item("Salade verte", "5.00"), item("Salade mêlée, entrée", "8.00"), item("Salade mêlée, plat", "14.00"), item("Salade César", "24.00"), item("Salade de L’Oued", "25.00"), item("Salade de gambas", "26.00"), item("Salade 100 % végétarienne", "23.00")] },
+  { id: "plats", name: "Plats chauds", products: [item("Fondue moitié-moitié", "25.00", "220 g / personne", "Minimum 2 personnes"), item("Gambas à la provençale avec frites", "33.00", "180 g"), item("Calamars à la romaine avec frites", "20.00", "200 g")] },
+  { id: "burgers", name: "Burgers", products: [item("Beef Burger", "18.00", "140 g"), item("Double Beef Burger", "24.00", "280 g"), item("Cheese Burger", "19.00", "140 g"), item("Double Cheese Burger", "25.00", "280 g"), item("Merguez Burger", "20.00", "140 g"), item("Double Merguez Burger", "26.00", "280 g"), item("Végi Burger", "18.00", "120 g"), item("Double Végi Burger", "24.00", "240 g")] },
+  { id: "consignes", name: "Consignes", products: [item("Gobelet éco-responsable", "2.–"), item("Verre à vin", "5.–"), item("Pichet", "10.–"), item("Refroidisseur à bouteille", "10.–")] },
+];

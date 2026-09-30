@@ -1,20 +1,31 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Utensils, IceCreamBowl } from "lucide-react";
+import { ArrowRight, Waves } from "lucide-react";
+import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from "@/components/ui/accordion";
 import PageIntro from "@/components/PageIntro";
-const minerals = ["Eau minérale sans gaz / gazeuse", "Coca / Coca zéro", "Thé froid citron / pêche", "Limonade citron", "Sinalco", "Jus de pomme", "Rivella rouge / bleu", "Schweppes tonic / Lemon"];
-const juices = ["Jus d’orange", "Jus d’ananas", "Jus de pêche", "Jus de tomate", "Nectar d’abricot", "Jus multifruits"];
+import { menu, type MenuProduct } from "@/data/menu";
+
 export default function Menu() {
-  return <><PageIntro title="La carte" eyebrow="Une pause à votre goût"><p>Un verre face au lac, une glace ou une assiette à partager. Retrouvez ici les informations disponibles de la carte de l’Oued.</p></PageIntro>
-    <div className="page-width py-10 sm:py-16"><p className="notice">Carte reprise des captures du site actuel. Actualité des tarifs et devise : <strong>[À confirmer]</strong>. Les rubriques non visibles dans les références restent à compléter.</p>
-      <nav aria-label="Catégories de la carte" className="my-8 flex flex-wrap gap-2">{[["minerales", "Boissons"], ["jus", "Jus & nectars"], ["bieres", "Bières pression"], ["assiettes", "Assiettes & glaces"]].map(([id, label]) => <a key={id} href={`#${id}`} className="rounded-full border border-primary/20 bg-white px-5 py-3 text-sm text-primary hover:bg-secondary">{label}</a>)}</nav>
-      <div className="grid gap-12 lg:grid-cols-[1fr_280px] lg:gap-16"><div className="min-w-0 space-y-14">
-        <DrinkTable id="minerales" title="Boissons minérales PET" names={minerals} volume="5 dl" />
-        <DrinkTable id="jus" title="Jus de fruits et nectars" names={juices} volume="2 dl" />
-        <section id="bieres"><p className="eyebrow mb-3">À la pression</p><h2 className="mb-6 text-2xl font-semibold text-primary">Les bières « La Nébuleuse »</h2><div className="overflow-x-auto rounded-xl border border-border"><table className="w-full text-left text-sm"><caption className="sr-only">Bières pression, volumes et prix à confirmer</caption><thead className="bg-secondary text-primary"><tr><th scope="col" className="p-3 sm:p-4">Bière</th>{["2.5 dl", "3.3 dl", "5 dl", "1.5 l"].map(v => <th key={v} scope="col" className="whitespace-nowrap p-2 text-right font-mono text-xs sm:p-3">{v}</th>)}</tr></thead><tbody>{[["Zepp Craft Lager 4.5%", "5.00", "–", "8.00", "20.00"], ["Embuscade IPA 6.4%", "6.00", "–", "9.00", "25.00"]].map(([name, ...prices]) => <tr key={name} className="border-t bg-white"><th scope="row" className="p-3 font-normal sm:p-4">{name}</th>{prices.map((p, i) => <td key={i} className="p-2 text-right font-mono text-xs sm:p-3">{p}</td>)}</tr>)}</tbody></table></div><p className="mt-3 text-xs leading-6 text-muted-foreground">« – » : aucune offre indiquée pour ce format dans la référence. Autres références : [À confirmer].</p></section>
-        <section id="assiettes" className="grid gap-6 sm:grid-cols-2">{[["Les assiettes", "Assiettes chaudes et froides", Utensils], ["Les glaces", "Une pause glacée", IceCreamBowl]].map(([title, subtitle, Icon]) => { const ItemIcon = Icon as typeof Utensils; return <div key={String(title)} className="rounded-2xl bg-secondary/60 p-6"><ItemIcon className="mb-4 text-primary" /><h2 className="text-xl font-semibold text-primary">{String(title)}</h2><p className="mt-3 text-sm">{String(subtitle)}</p><p className="mt-3 text-sm leading-7 text-muted-foreground">Choix et prix : [À confirmer]</p></div>; })}</section>
-      </div><aside className="h-fit rounded-2xl bg-secondary/60 p-7"><p className="eyebrow">Bon à savoir</p><h2 className="mt-4 text-xl font-semibold text-primary">Avant votre visite</h2><p className="mt-4 text-sm leading-7 text-muted-foreground">Les horaires varient selon la saison et la météo.</p><Link to="/horaires" className="text-link mt-5">Voir les horaires <ArrowRight size={16} /></Link><div className="mt-7 border-t pt-6"><h3 className="text-sm font-semibold">Informations alimentaires</h3><p className="mt-3 text-sm leading-7 text-muted-foreground">Allergènes et informations complémentaires : [À confirmer]</p></div></aside></div>
-    </div></>;
+  return <><PageIntro title="La carte" eyebrow="À boire, à grignoter, à partager"><p>Un verre face au lac, une assiette entre amis. Faites votre choix, prenez votre temps.</p></PageIntro>
+    <div className="page-width py-10 sm:py-16"><div className="mx-auto max-w-3xl">
+      <h2 className="sr-only">La carte par catégorie</h2>
+      <p className="mb-5 text-sm text-muted-foreground">Ouvrez une catégorie pour découvrir la carte.</p>
+      <Accordion type="single" collapsible className="[&_[data-state=open][role=region]]:duration-200">
+        {menu.map((category, index) => <AccordionItem key={category.id} value={category.id} className="border-primary/15">
+          <AccordionTrigger className="gap-5 rounded-lg py-6 text-left text-lg font-medium leading-snug text-primary hover:no-underline sm:py-7 sm:text-xl [&>svg]:h-5 [&>svg]:w-5"><span className="flex items-baseline gap-4 sm:gap-6"><span aria-hidden="true" className="font-mono text-[11px] font-normal text-muted-foreground">{String(index + 1).padStart(2, "0")}</span><span>{category.name}</span></span></AccordionTrigger>
+          <AccordionContent className="pb-7 sm:pl-10"><ul className="space-y-1">{category.products.map((product, i) => <Product key={`${product.name}-${i}`} product={product} />)}</ul></AccordionContent>
+        </AccordionItem>)}
+      </Accordion>
+      <div className="mt-9 space-y-2 text-xs leading-6 text-muted-foreground"><p>Prix indiqués en francs suisses (CHF), TVA et service inclus.</p><p>Informations sur les allergènes : [À confirmer]</p></div>
+      <div className="mt-12 flex flex-wrap items-center justify-between gap-5"><p className="flex items-center gap-3 text-sm text-primary"><Waves size={23} /> Et le lac pour horizon.</p><Link to="/horaires" className="text-link">Voir les horaires <ArrowRight size={16} /></Link></div>
+    </div></div></>;
 }
-function DrinkTable({ id, title, names, volume }: { id: string; title: string; names: string[]; volume: string }) {
-  return <section id={id}><h2 className="mb-6 text-2xl font-semibold text-primary">{title}</h2><div className="overflow-hidden rounded-xl border border-border"><table className="w-full text-left text-sm"><caption className="sr-only">{title}, contenances et prix à confirmer</caption><thead className="bg-secondary text-primary"><tr><th scope="col" className="p-4">Boisson</th><th scope="col" className="p-3 text-right font-mono text-xs">Cont.</th><th scope="col" className="p-3 text-right font-mono text-xs">Prix*</th></tr></thead><tbody>{names.map(name => <tr key={name} className="border-t bg-white"><th scope="row" className="px-4 py-4 font-normal">{name}</th><td className="whitespace-nowrap p-3 text-right font-mono text-xs text-muted-foreground">{volume}</td><td className="p-3 text-right font-mono text-xs">4.50</td></tr>)}</tbody></table></div><p className="mt-3 text-xs text-muted-foreground">* Tarifs et devise : [À confirmer].</p></section>;
+
+function Product({ product }: { product: MenuProduct }) {
+  const hasVolume = product.options.some(option => option.volume);
+  return <li className="py-3">
+    <div className={`grid gap-x-4 gap-y-2 ${hasVolume ? "sm:grid-cols-[minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
+      <div className="min-w-0 text-sm leading-6 sm:text-base">{product.name}{product.note && <p className="text-xs text-muted-foreground">{product.note}</p>}</div>
+      <div className="space-y-2">{product.options.map((option, i) => <div key={i} className="flex items-baseline justify-end gap-3 sm:gap-6"><span className="max-w-[140px] text-right text-xs leading-5 text-muted-foreground sm:max-w-none">{option.volume}</span><span className="min-w-[82px] whitespace-nowrap text-right text-sm font-semibold tabular-nums text-primary"><span className="mr-1 text-[10px] font-normal">CHF</span>{option.price}</span></div>)}</div>
+    </div>
+  </li>;
 }
