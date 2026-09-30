@@ -1,32 +1,59 @@
-import { CloudSun, ArrowRight, Sun } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { CalendarDays, ChevronLeft, ChevronRight, CloudSun, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageIntro from "@/components/PageIntro";
+import { Button } from "@/components/ui/button";
+import { PlaceImage } from "@/components/PlaceImage";
+import { getCurrentPeriodId, openingPeriods } from "@/data/openingPeriods";
 
-const periods = [
-  { period: "Janvier", hours: "Une pause hivernale", rhythm: "Fermé" },
-  { period: "Samedi 14 février", hours: "16h → 20h", rhythm: "Ouverture de saison" },
-  { period: "15 février → 3 avril", hours: "12h → coucher du soleil", rhythm: "Tous les jours", frost: true },
-  { period: "4 avril → 13 mai", hours: "11h → coucher du soleil", rhythm: "Tous les jours" },
-  { period: "14 mai → 21 septembre", hours: "11h00 → 23h00", rhythm: "Tous les jours", main: true },
-  { period: "22 septembre → 1er novembre", hours: "11h00 → coucher du soleil", rhythm: "Tous les jours" },
-  { period: "Novembre & décembre", hours: "14h → coucher du soleil", rhythm: "Le dimanche", frost: true },
-];
 export default function Hours() {
-  return <><PageIntro title="Les horaires" eyebrow="Le temps d’une pause au lac"><p>Des premiers beaux jours aux longues soirées d’été, retrouvez le rythme de la buvette.</p></PageIntro>
-    <div className="page-width py-10 sm:py-16"><div className="mx-auto max-w-3xl">
-      <h2 className="sr-only">Les périodes d’ouverture</h2>
-      <p className="mb-8 flex items-start gap-3 text-sm leading-6 text-muted-foreground"><CloudSun size={21} className="mt-0.5 shrink-0 text-primary" />Ouverture par beau temps. Hors gel également pour les périodes signalées.</p>
-      <ol className="ml-2 border-l border-primary/20">
-        {periods.map(period => <li key={period.period} className="relative pb-9 pl-6 sm:pl-10"><span aria-hidden="true" className={`absolute -left-[5px] top-2 h-[9px] w-[9px] rounded-full ${period.main ? "bg-primary" : "bg-background ring-1 ring-primary/40"}`} />
-          <div className={period.main ? "-ml-2 rounded-[1.5rem] bg-primary p-6 text-white sm:p-8" : "py-1"}>
-            {period.main && <p className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white/85"><Sun size={18} /> Les beaux jours à l’Oued</p>}
-            <h3 className={`text-base font-medium sm:text-lg ${period.main ? "text-white" : "text-primary"}`}>{period.period}</h3>
-            <p className={`mt-2 font-semibold tracking-tight ${period.main ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"}`}>{period.hours}</p>
-            <p className={`mt-2 text-sm ${period.main ? "text-white/85" : "text-muted-foreground"}`}>{period.rhythm}{period.frost && <span className="ml-3 text-xs">· Hors gel</span>}</p>
-          </div>
-        </li>)}
+  const [currentId, setCurrentId] = useState(() => getCurrentPeriodId());
+  const timeline = useRef<HTMLOListElement>(null);
+  useEffect(() => {
+    const timer = window.setInterval(() => setCurrentId(getCurrentPeriodId()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  useEffect(() => {
+    const list = timeline.current;
+    const current = list?.querySelector<HTMLElement>('[aria-current="date"]');
+    if (list && current) {
+      // Move only the horizontal strip, never the page's vertical scroll position.
+      list.scrollLeft = current.offsetLeft - list.offsetLeft - (list.clientWidth - current.clientWidth) / 2;
+    }
+  }, [currentId]);
+  const move = (direction: number) => {
+    const list = timeline.current;
+    if (list) list.scrollBy({ left: direction * list.clientWidth * 0.75, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  };
+  return <>
+    <section className="relative isolate overflow-hidden bg-primary text-white">
+      <div className="absolute inset-0 -z-20"><PlaceImage terrace /></div>
+      <div className="absolute inset-0 -z-10 bg-[#102f46]/25" />
+      <div className="page-width py-6 sm:py-8">
+        <nav aria-label="Fil d’Ariane" className="flex items-center gap-2 text-xs text-white/90"><Link to="/" className="rounded-sm underline-offset-4 hover:underline">Accueil</Link><ChevronRight size={13} aria-hidden="true" /><span aria-current="page">Les horaires</span></nav>
+        <div className="max-w-2xl py-10 sm:py-14"><p className="eyebrow mb-5 text-white">Au rythme du lac et des saisons</p><h1 className="hero-title">Les horaires</h1><p className="mt-5 max-w-lg text-base leading-7 sm:text-lg">Nos horaires évoluent au fil des saisons et selon les conditions météo.</p></div>
+      </div>
+    </section>
+    <section aria-labelledby="calendar-heading" className="page-width py-10 sm:py-12">
+      <div className="flex items-end justify-between gap-4"><div><p className="eyebrow mb-3">Votre prochain moment à l’Oued</p><h2 id="calendar-heading" className="text-2xl font-semibold tracking-tight text-primary sm:text-3xl">L’année en un regard</h2></div><div className="flex shrink-0 gap-2"><Button variant="outline" size="icon" onClick={() => move(-1)} aria-label="Voir les périodes précédentes" aria-controls="season-timeline" className="h-10 w-10 rounded-full border-primary/20 text-primary"><ChevronLeft size={18} /></Button><Button variant="outline" size="icon" onClick={() => move(1)} aria-label="Voir les périodes suivantes" aria-controls="season-timeline" className="h-10 w-10 rounded-full border-primary/20 text-primary"><ChevronRight size={18} /></Button></div></div>
+      <p id="timeline-help" className="mt-3 text-xs leading-6 text-muted-foreground">Faites glisser la frise ou utilisez les flèches pour parcourir les saisons.</p>
+      <ol ref={timeline} id="season-timeline" tabIndex={0} aria-label="Périodes d’ouverture de la buvette" aria-describedby="timeline-help" className="relative mt-6 flex snap-x snap-proximity overflow-x-auto overscroll-x-contain pb-4 [scrollbar-color:hsl(var(--primary)/0.3)_transparent] [scrollbar-width:thin]">
+        {openingPeriods.map(period => {
+          const current = period.id === currentId;
+          return <li key={period.id} aria-current={current ? "date" : undefined} className="relative w-[230px] shrink-0 snap-center pt-5 sm:w-[245px]">
+            <span aria-hidden="true" className="absolute inset-x-0 top-[5px] h-px bg-primary/20" /><span aria-hidden="true" className={`absolute left-5 top-0 h-[11px] w-[11px] rounded-full border-2 ${current ? "border-primary bg-primary" : "border-primary/40 bg-background"}`} />
+            <div className={`mr-3 min-h-[218px] rounded-2xl p-5 ${current ? "bg-primary text-white" : "text-foreground"}`}>
+              <p className={`mb-3 min-h-4 font-mono text-[10px] uppercase tracking-wider ${current ? "text-white" : "text-muted-foreground"}`}>{current ? "Période actuelle" : "\u00a0"}</p>
+              <h3 className={`min-h-12 text-base font-semibold leading-6 ${current ? "text-white" : "text-primary"}`}>{period.label}</h3>
+              {period.rhythm && <p className={`mt-2 text-xs ${current ? "text-white/85" : "text-muted-foreground"}`}>{period.rhythm}</p>}
+              <p className="mt-2 text-lg font-semibold leading-6 tracking-tight">{period.hours}</p>
+              {period.weather && <p className={`mt-4 flex items-start gap-2 text-xs leading-5 ${current ? "text-white/90" : "text-muted-foreground"}`}><CloudSun size={16} aria-hidden="true" className="mt-0.5 shrink-0" />{period.weather}</p>}
+            </div>
+          </li>;
+        })}
       </ol>
-      <p className="mt-1 text-xs leading-6 text-muted-foreground">Calendrier issu de « Les horaires 26 ». Année et actualité des horaires : [À confirmer].</p>
-      <div className="mt-12 border-t border-primary/15 pt-8"><p className="eyebrow">Et parfois, la soirée continue…</p><h2 className="mt-3 text-2xl font-semibold text-primary">Soirées à thème & événements</h2><p className="body-copy mt-3">Les rendez-vous de la buvette sont annoncés sur nos réseaux sociaux.</p><Link to="/contact-acces" className="text-link mt-5">Suivre la buvette <ArrowRight size={16} /></Link></div>
-    </div></div></>;
+      <p className="mt-3 max-w-3xl text-xs leading-6 text-muted-foreground">La période actuelle est repérée selon la date en Suisse. Ce repère ne confirme pas l’ouverture réelle : les horaires indiqués restent soumis aux conditions météo.</p>
+      {!currentId && <p className="mt-2 text-sm text-muted-foreground">Aucun horaire n’est précisé pour la date du jour : [À confirmer].</p>}
+    </section>
+    <section className="bg-secondary/45"><div className="page-width flex flex-col gap-5 py-9 sm:flex-row sm:items-center sm:gap-7"><CalendarDays aria-hidden="true" strokeWidth={1.5} className="h-9 w-9 shrink-0 text-primary" /><div className="flex-1"><h2 className="text-xl font-semibold text-primary">Soirées à thème & événements</h2><p className="mt-2 text-sm leading-7 text-muted-foreground">Soirées à thème et événements annoncés sur nos réseaux sociaux.</p></div><Link to="/contact-acces" className="text-link shrink-0">Contact & réseaux <ArrowRight size={16} aria-hidden="true" /></Link></div></section>
+  </>;
 }

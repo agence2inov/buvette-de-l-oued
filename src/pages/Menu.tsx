@@ -55,7 +55,7 @@ export default function Menu() {
 
 function Product({ product }: { product: MenuProduct }) {
   const hasVolume = product.options.some(option => option.volume);
-  return <li className="py-3">
+  return <li className="rounded-lg px-3 py-3 odd:bg-white even:bg-secondary/60">
     <div className={`grid gap-x-3 gap-y-2 ${hasVolume ? "sm:grid-cols-[minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
       <div className="min-w-0 text-sm leading-6">{product.name}{product.note && <p className="text-xs text-muted-foreground">{product.note}</p>}</div>
       <div className="space-y-2">{product.options.map((option, i) => <div key={i} className="flex items-baseline justify-end gap-3"><span className="max-w-[110px] text-right text-xs leading-5 text-muted-foreground">{option.volume}</span><span className="min-w-[76px] whitespace-nowrap text-right text-sm font-semibold tabular-nums text-primary"><span className="mr-1 text-[10px] font-normal">CHF</span>{option.price}</span></div>)}</div>
