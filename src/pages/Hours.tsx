@@ -27,10 +27,10 @@ export default function Hours() {
   return <>
     <section className="relative isolate overflow-hidden bg-primary text-white">
       <div className="absolute inset-0 -z-20"><PlaceImage terrace /></div>
-      <div className="absolute inset-0 -z-10 bg-[#102f46]/25" />
-      <div className="page-width py-6 sm:py-8">
+      <div className="absolute inset-0 -z-10 bg-[#102f46]/10" />
+      <div className="photo-copy page-width py-6 sm:py-8">
         <nav aria-label="Fil d’Ariane" className="flex items-center gap-2 text-xs text-white/90"><Link to="/" className="rounded-sm underline-offset-4 hover:underline">Accueil</Link><ChevronRight size={13} aria-hidden="true" /><span aria-current="page">Les horaires</span></nav>
-        <div className="max-w-2xl py-10 sm:py-14"><p className="eyebrow mb-5 text-white">Au rythme du lac et des saisons</p><h1 className="hero-title">Les horaires</h1><p className="mt-5 max-w-lg text-base leading-7 sm:text-lg">Nos horaires évoluent au fil des saisons et selon les conditions météo.</p></div>
+        <div className="max-w-2xl py-14 sm:py-20"><p className="eyebrow mb-5 text-white">Au rythme du lac et des saisons</p><h1 className="hero-title italic">Les horaires</h1><p className="mt-5 max-w-lg text-base leading-7 sm:text-lg">Nos horaires évoluent au fil des saisons et selon les conditions météo.</p></div>
       </div>
     </section>
     <section aria-labelledby="calendar-heading" className="page-width py-10 sm:py-12">
@@ -39,11 +39,11 @@ export default function Hours() {
       <ol ref={timeline} id="season-timeline" tabIndex={0} aria-label="Périodes d’ouverture de la buvette" aria-describedby="timeline-help" className="relative mt-6 flex snap-x snap-proximity overflow-x-auto overscroll-x-contain pb-4 [scrollbar-color:hsl(var(--primary)/0.3)_transparent] [scrollbar-width:thin]">
         {openingPeriods.map(period => {
           const current = period.id === currentId;
-          return <li key={period.id} aria-current={current ? "date" : undefined} className="relative w-[230px] shrink-0 snap-center pt-5 sm:w-[245px]">
-            <span aria-hidden="true" className="absolute inset-x-0 top-[5px] h-px bg-primary/20" /><span aria-hidden="true" className={`absolute left-5 top-0 h-[11px] w-[11px] rounded-full border-2 ${current ? "border-primary bg-primary" : "border-primary/40 bg-background"}`} />
-            <div className={`mr-3 min-h-[218px] rounded-2xl p-5 ${current ? "bg-primary text-white" : "text-foreground"}`}>
+          return <li key={period.id} aria-current={current ? "date" : undefined} className="relative w-[230px] shrink-0 snap-center pt-6 sm:w-[245px]">
+            <svg aria-hidden="true" viewBox="0 0 240 18" preserveAspectRatio="none" className="absolute inset-x-0 top-0 h-5 w-full text-primary/30"><path d="M0 9 Q60 -3 120 9 T240 9" fill="none" stroke="currentColor" strokeWidth="1.2" /></svg><span aria-hidden="true" className={`absolute left-5 top-0 h-[11px] w-[11px] rounded-full border-2 ${current ? "border-primary bg-primary" : "border-primary/40 bg-background"}`} />
+            <div className={`mr-3 min-h-[218px] p-5 ${current ? "rounded-bl-[2rem] rounded-tr-[2rem] bg-primary text-white" : "text-foreground"}`}>
               <p className={`mb-3 min-h-4 font-mono text-[10px] uppercase tracking-wider ${current ? "text-white" : "text-muted-foreground"}`}>{current ? "Période actuelle" : "\u00a0"}</p>
-              <h3 className={`min-h-12 text-base font-semibold leading-6 ${current ? "text-white" : "text-primary"}`}>{period.label}</h3>
+              <h3 className={`editorial-title min-h-12 text-xl leading-6 ${current ? "text-white" : "text-primary"}`}>{period.label}</h3>
               {period.rhythm && <p className={`mt-2 text-xs ${current ? "text-white/85" : "text-muted-foreground"}`}>{period.rhythm}</p>}
               <p className="mt-2 text-lg font-semibold leading-6 tracking-tight">{period.hours}</p>
               {period.weather && <p className={`mt-4 flex items-start gap-2 text-xs leading-5 ${current ? "text-white/90" : "text-muted-foreground"}`}><CloudSun size={16} aria-hidden="true" className="mt-0.5 shrink-0" />{period.weather}</p>}

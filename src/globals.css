@@ -4,26 +4,29 @@
 
 @layer base {
   :root {
-    --background: 40 30% 99%;
-    --foreground: 211 43% 21%;
+    --background: 42 48% 97%;
+    --foreground: 211 35% 23%;
     --primary: 212 78% 35%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 205 43% 95%;
+    --secondary: 205 36% 94%;
     --secondary-foreground: 211 43% 21%;
-    --muted: 205 35% 95%;
-    --muted-foreground: 213 17% 40%;
-    --accent: 205 43% 94%;
+    --sand: 39 43% 90%;
+    --sun: 39 66% 69%;
+    --muted: 40 27% 93%;
+    --muted-foreground: 213 15% 38%;
+    --accent: 39 43% 90%;
     --accent-foreground: 212 78% 35%;
-    --card: 0 0% 100%;
+    --card: 42 48% 97%;
     --card-foreground: 211 43% 21%;
-    --popover: 0 0% 100%;
+    --popover: 42 48% 97%;
     --popover-foreground: 211 43% 21%;
-    --border: 209 28% 86%;
-    --input: 209 28% 86%;
+    --border: 36 22% 81%;
+    --input: 36 22% 81%;
     --ring: 212 78% 35%;
     --destructive: 0 65% 45%;
     --destructive-foreground: 0 0% 100%;
     --radius: 0.8rem;
+    --font-display: Georgia, 'Times New Roman', serif;
   }
   * { @apply border-border; }
   body { @apply m-0 bg-background text-foreground antialiased; font-family: 'Segoe UI', Arial, sans-serif; }
@@ -31,19 +34,26 @@
   a, button { -webkit-tap-highlight-color: transparent; }
   :focus-visible { outline: 3px solid #639ccf; outline-offset: 5px; }
   section[id] { scroll-margin-top: 2rem; }
+  ::selection { background: hsl(var(--sand)); color: hsl(var(--primary)); }
 }
 
 @layer components {
-  .page-width { @apply mx-auto w-full max-w-[1320px] px-6 sm:px-10 lg:px-14; }
-  .eyebrow { @apply font-mono text-[11px] font-medium uppercase tracking-[0.17em] text-primary sm:text-xs; }
-  .hero-title { @apply text-[2.6rem] font-semibold leading-[1.08] tracking-[-0.045em] sm:text-6xl lg:text-[4.7rem]; text-shadow: 0 2px 16px rgb(10 35 50 / 25%); }
-  .section-title { @apply text-3xl font-semibold leading-[1.16] tracking-[-0.035em] text-primary sm:text-4xl lg:text-[2.8rem]; }
+  .page-width { @apply mx-auto w-full max-w-[1400px] px-6 sm:px-10 lg:px-16; }
+  .eyebrow { @apply font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-primary sm:text-xs; }
+  .hero-title { @apply text-[2.9rem] font-normal leading-[1.05] tracking-[-0.04em] sm:text-7xl lg:text-[5.8rem]; font-family: var(--font-display); text-shadow: 0 2px 20px rgb(10 35 50 / 40%); }
+  .section-title { @apply text-4xl font-normal leading-[1.1] tracking-[-0.035em] text-primary sm:text-5xl lg:text-[3.6rem]; font-family: var(--font-display); }
+  .editorial-title { font-family: var(--font-display); font-weight: 400; letter-spacing: -.025em; }
   .body-copy { @apply text-base leading-8 text-muted-foreground; }
   .text-link { @apply inline-flex items-center gap-3 text-sm font-semibold text-primary underline decoration-primary/30 underline-offset-8 transition-colors hover:decoration-primary; }
   .nav-link { @apply border-b-2 border-transparent py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary; }
   .nav-active { @apply border-primary text-primary; }
-  .page-intro { @apply border-b border-border bg-secondary/50 py-12 sm:py-16; }
-  .notice { @apply rounded-xl border border-primary/15 bg-secondary/60 px-5 py-4 text-sm leading-7 text-muted-foreground; }
+  .sand-surface { background-color: hsl(var(--sand)); }
+  .sun-accent { color: hsl(var(--sun)); }
+  .photo-copy { text-shadow: 0 1px 12px rgb(10 35 50 / 65%); }
+  .photo-caption { @apply font-mono text-[11px] leading-6 text-primary; }
+  .menu-sheet { @apply border-t border-primary/25 pt-6; }
+  .menu-sheet h2 { @apply italic; }
+  .contact-note { border-radius: 5px 64px 5px 5px; }
 }
 
 @keyframes page-arrival {
